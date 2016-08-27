@@ -1,0 +1,39 @@
+
+door planning / room planning
+
+...xx...    2  18
+..xxxx..    4  3c
+.xxxxxx.    6  7e
+xxxxxxxx    8  ff
+xxxxxxxx    8  ff
+xxxxxxxx    8  ff
+xxx..xxx    6  e7
+xxx..xxx    6  e7
+.x....x.    2  42
+
+50 rooms
+
+24,60,126,255,255,255,231,66
+
+
+
+ .. .. .. 01 02 .. .. ..
+ .. .. 03 04 05 06 .. ..
+ .. 07 08 09 10 11 12 ..
+ 13 14 15 16 17 18 19 20
+ 21 22 23 24 25 26 27 28
+ 29 30 31 32 33 34 35 36
+ 37 38 39 .. .. 40 41 42
+ 43 44 45 .. .. 46 47 48
+ .. 49 .. .. .. .. 50 ..
+
+ 49, 50,		 1 door, N.
+ 01, 03, 07, 13; 2 doors, S, E
+ 02, 06, 12, 20; 2 doors, S, W
+ 43, 46; 2 doors, N, E
+ 45, 48; 2 doors, N, W
+ 21, 29, 37, 40; 3 doors; N, E, S
+ 28, 36, 42, 39; 3 doors; N, W, S
+ 32, 33; 3 doors; N, E, W
+ all others: 4 doors
+
