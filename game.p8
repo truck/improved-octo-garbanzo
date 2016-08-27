@@ -34,19 +34,34 @@ function defobj(x,y,sprite)
  return obj
 end
 
+function status()
+ cursor(0,64)
+ print('STATUS status')
+ print('this is where status stuff goes')
+ print('1')
+ print('2')
+ print('3')
+ print('4')
+ print('5')
+ print('6 careful to not overflow this')
+end
+
 function movedude()
- if (btn(0)) dude.x -= 8
- if (btn(1)) dude.x += 8
- if (btn(2)) dude.y -= 8
- if (btn(3)) dude.y += 8
+ if (btn(0)) dude.x -= 1
+ if (btn(1)) dude.x += 1
+ if (btn(2)) dude.y -= 1
+ if (btn(3)) dude.y += 1
 end
 
 function draw_actor(a)
+pal(1,0)
  spr(a.spr + 4, a.x+1, a.y+1)
  spr(a.spr + 4, a.x+1, a.y-1)
  spr(a.spr + 4, a.x-1, a.y-1)
  spr(a.spr + 4, a.x-1, a.y+1)
+ pal()
  spr(a.spr, a.x, a.y)
+ status()
 end
 
 
