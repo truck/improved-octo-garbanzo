@@ -19,16 +19,16 @@ typewriters with written messages, etc.
 --
 Sound stuff:
 
-Tune(s)?
+- Tune(s)?
 
-Telephone ring
-Door open
-Door unlock
-walking?
-computer startup
-explosion (dunno where we use it but gotta have an explosion sound)
-floppy insertion sound
-floppy eject sound
-modem sound
+- Telephone ring
+- Door open
+- Door unlock
+- walking?
+- computer startup
+- explosion (dunno where we use it but gotta have an explosion sound)
+- floppy insertion sound
+- floppy eject sound
+- modem sound
 
-probably more but that is good to start
+- probably more but that is good to start
