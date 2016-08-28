@@ -84,9 +84,42 @@ function movedude()
    dude.x = dude.x + move[dude.dir][1]
    dude.y = dude.y + move[dude.dir][2]
   end
+  -- possible 'hook' spot for interaction with objects
+  if interactive(x,y) then
+   do_interaction(x,y)
+  end
  end
 end
 
+function do_interaction(x,y)
+ x1 = flr(x/8)
+ y1 = flr(y/8)
+ spot = mget(x1,y1)
+-- door: 21, 22
+ if spot == 21 or spot == 22 then
+  newroom(x1,y1)
+ end
+end
+
+-- I turned the spaceship 90 degrees accidentaly but it looks good so x,y swap
+function newroom(x,y)
+ rx = roomx[dude.room]
+ ry = roomy[dude.room]
+ if dude.dir == 1 then
+  dude.y = 56
+  rx = rx - 1
+ elseif dude.dir == 2 then
+  dude.y = 9
+  rx = rx + 1
+ elseif dude.dir == 3 then
+  dude.x = 9
+  ry = ry + 1
+ elseif dude.dir == 4 then
+  dude.x = 120
+  ry = ry - 1
+ end
+ dude.room = ship[rx][ry]
+end
 function calcpos(dir)
  v = dir < 3
  h = dir > 2
