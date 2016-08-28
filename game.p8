@@ -57,24 +57,48 @@ print(z)
  drawship()
 end
 
-function movedude()
- dude.dir = 0
+function getdir()
+ d = 0
  if (btn(0)) then
-  dude.x -= 1
-  dude.dir = 4
+  d = 4
  end
  if (btn(1)) then
-  dude.x += 1
-  dude.dir = 3
+  d = 3
  end
  if (btn(2)) then
-  dude.y -= 1
-  dude.dir = 1
+  d = 1
  end
  if (btn(3)) then
-  dude.y += 1
-  dude.dir = 2
+  d = 2
  end
+ return d
+end
+
+function movedude()
+ dude.dir = getdir()
+ ok = false
+ if dude.dir > 0 then
+  x,y = calcpos(dude.dir)
+  if not solid(x,y) then
+   dude.x = x
+   dude.y = y
+  end
+ end
+end
+
+function calcpos(dir)
+ v = dir < 3
+ h = dir > 2
+ x = dude.x
+ y = dude.y
+ if v then
+  c = (((dir-1)*2)-1)
+  y = dude.y + c
+ else
+  c = -(((dir-1)*2)-5)
+  x = dude.x + c
+ end
+ return x,y
 end
 
 function draw_actor(a)
@@ -94,11 +118,8 @@ function draw_actor(a)
  end
  spr(walkspr, a.x, a.y)
  pal()
- xx = flr(a.x/8)
- yy = flr(a.y/8)
- zz = solid(xx,yy)
- zzz = interactive(xx,yy)
- status(d,zz,zzz)
+ zz = calcpos(1)
+ status(d,zz,'stAtUs')
 end
 
 -- stuff dealing with setup
