@@ -106,16 +106,16 @@ function newroom(x,y)
  ry = roomy[dude.room]
  if dude.dir == 1 then
   dude.y = 47
-  rx = rx - 1
+  ry = ry - 1
  elseif dude.dir == 2 then
   dude.y = 9
-  rx = rx + 1
+  ry = ry + 1
  elseif dude.dir == 3 then
   dude.x = 9
-  ry = ry + 1
+  rx = rx + 1
  elseif dude.dir == 4 then
   dude.x = 56
-  ry = ry - 1
+  rx = rx - 1
  end
  dude.room = ship[rx][ry]
 end
