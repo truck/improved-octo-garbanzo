@@ -118,8 +118,9 @@ function draw_actor(a)
  end
  spr(walkspr, a.x, a.y)
  pal()
- zz = calcpos(1)
- status(d,zz,'stAtUs')
+ xx,yy = calcpos(a.dir)
+ zz = solid( calcpos(a.dir) )
+ status(xx,yy,zz)
 end
 
 -- stuff dealing with setup
@@ -148,14 +149,19 @@ function drawship()
 spr(25,93+roomx[dude.room]*3,60+roomy[dude.room]*3)
 end
 
+function checkflag(x,y,flag)
+ x1 = flr(x/8)
+ y1 = flr(y/8)
+ spot=mget(x1, y1)
+ return fget(spot, flag)
+end
+
 function solid(x, y)
- spot=mget(x, y)
- return fget(spot, 0)
+ return checkflag(x,y,0)
 end
 
 function interactive(x, y)
- spot=mget(x,y)
- return fget(spot,1)
+ return checkflag(x,y,1)
 end
 
 
