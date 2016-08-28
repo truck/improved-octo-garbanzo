@@ -7,6 +7,7 @@ actors = {}
 
 function _init()
  dude = defobj(16,16,1)
+ ship = setupship()
 end
 
 function _draw()
@@ -35,13 +36,13 @@ function defobj(x,y,sprite)
 end
 
 function status()
- cursor(0,64)
+-- some debug in 5,6 and 8,8 to check
  print('STATUS status')
  print('this is where status stuff goes')
  print('1')
- print('2')
+ print(ship[5][6])
  print('3')
- print('4')
+ print(ship[8][8])
  print('5')
  print('6 careful to not overflow this')
 end
@@ -63,6 +64,27 @@ pal(1,0)
  spr(a.spr, a.x, a.y)
  status()
 end
+
+-- stuff dealing with setup
+--[[
+
+
+]]--
+
+function setupship()
+ ship = {}
+ for i=1,11,1 do
+  ship[i]={}
+ end
+ rdx = {2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 10, 10}
+ rdy = {5, 6, 4, 5, 6, 7, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 9, 2, 3, 4, 5, 6, 7, 8, 9, 2, 3, 4, 5, 6, 7, 8, 9, 2, 3, 4, 7, 8, 9, 2, 3, 4, 7, 8, 9, 3, 8}
+ for i=1,50,1 do
+  ship[rdx[i]][rdy[i]] = i
+  print(i)
+ end
+ return ship
+end
+
 
 
 
