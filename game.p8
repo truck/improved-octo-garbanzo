@@ -76,12 +76,13 @@ end
 
 function movedude()
  dude.dir = getdir()
+ move = {{0,-1},{0,1},{1,0},{-1,0}}
  ok = false
  if dude.dir > 0 then
   x,y = calcpos(dude.dir)
   if not solid(x,y) then
-   dude.x = x
-   dude.y = y
+   dude.x = dude.x + move[dude.dir][1]
+   dude.y = dude.y + move[dude.dir][2]
   end
  end
 end
@@ -92,10 +93,10 @@ function calcpos(dir)
  x = dude.x
  y = dude.y
  if v then
-  c = (((dir-1)*2)-1)
+  c = (((dir-1)*9)-1)
   y = dude.y + c
  else
-  c = -(((dir-1)*2)-5)
+  c = (-1*(9*(dir-4)))-1
   x = dude.x + c
  end
  return x,y
