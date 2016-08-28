@@ -36,7 +36,8 @@ function defobj(x,y,sprite)
 end
 
 function status()
--- some debug in 5,6 and 8,8 to check
+-- some debug stuff and why did the cursor line leave
+ cursor(0,64)
  print('STATUS status')
  print('this is where status stuff goes')
  print('1')
