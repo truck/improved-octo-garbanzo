@@ -12,11 +12,13 @@ function _init()
  roomy = {5, 6, 4, 5, 6, 7, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 9, 2, 3, 4, 5, 6, 7, 8, 9, 2, 3, 4, 5, 6, 7, 8, 9, 2, 3, 4, 7, 8, 9, 2, 3, 4, 7, 8, 9, 3, 8}
  setupship()
  dude.room = flr(rnd(50))+1
+ currentroom = getroom(dude.room)
 end
 
 function _draw()
  cls()
  map(0,0,0,0,16,8)
+ patchdoors()
  foreach(actors,draw_actor)
  phonedial()
 end
@@ -25,6 +27,10 @@ end
 
 function _update()
  movedude()
+end
+
+function patchdoors()
+ spr(20,10,10)
 end
 
 -- define a moving object
@@ -215,6 +221,23 @@ function setupship()
    thisroom.leftdoor = 0
   end
  end
+end
+
+function getroom(roomnum)
+ rx = roomx[roomnum]
+ ry = roomy[roomnum]
+ theroom = ship[rx][ry]
+ roomdown = findroom(rx,ry,2)
+ roomright = findroom(rx,ry,3)
+ theroom.rightdoor = 0
+ theroom.downdoor = 0
+ if roomright then
+  theroom.rightdoor = roomright.leftdoor
+ end
+ if roomdown then
+  theroom.downdoor = roomdown.updoor
+ end
+ return theroom
 end
 
 function drawship()
