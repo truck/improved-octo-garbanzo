@@ -152,7 +152,7 @@ function findroom(x,y,dir)
  elseif dir == 4 then
   x = x - 1
  end
- return x,y
+ return ship[x][y]
 end
 
 function calcpos(dir)
@@ -201,9 +201,20 @@ function setupship()
  end
 -- rooms
  for i=1,50,1 do
-
+  rx = roomx[i]
+  ry = roomy[i]
+  roomup = findroom(rx,ry,1)
+--  roomdown = findroom(rx,ry,2)
+--  roomright = findroom(rx,ry,3)
+  roomleft = findroom(rx,ry,4)
+  thisroom = ship[rx][ry]
+  if not roomup then
+   thisroom.updoor = 0
+  end
+  if not roomleft then
+   thisroom.leftdoor = 0
+  end
  end
-
 end
 
 function drawship()
