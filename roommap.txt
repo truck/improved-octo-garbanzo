@@ -77,3 +77,10 @@ Doors:
 0 - no door
 1 - closed
 2 - open
+
+gfx:
+no door: 20
+vdoor: 21
+hdoor: 22
+opendoor: 23
+disk: 32  phone: 33  computer: 34  fax: 35 modem: 36 tape: 37
