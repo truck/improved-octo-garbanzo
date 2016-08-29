@@ -21,11 +21,13 @@ function _draw()
  phonedial()
 end
 
+-- we should probably move some of the logic to the update function
+
 function _update()
  movedude()
 end
 
--- define an object ('actor' whatever)
+-- define a moving object
 function defobj(x,y,sprite)
  obj = {}
  obj.x = x
@@ -40,6 +42,16 @@ function defobj(x,y,sprite)
  add(actors, obj)
  return obj
 end
+
+-- room definition
+function defroom(roomnum)
+ room = {}
+ room.updoor = 1
+ room.leftdoor = 1
+ room.power = false
+ room.phonenum = '0000'
+end
+
 
 function status(x,y,z)
 -- some debug stuff and why did the cursor line leave

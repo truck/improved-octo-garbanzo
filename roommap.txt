@@ -73,3 +73,7 @@ Directions:
   4 3
    2
 
+Doors:
+0 - no door
+1 - closed
+2 - open
