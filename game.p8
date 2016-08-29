@@ -1,13 +1,13 @@
 pico-8 cartridge // http://www.pico-8.com
 version 8
 __lua__
--- Globals
+-- globals
 actors = {}
 
--- Control Routines
+-- control routines
 
 function _init()
- music(0)
+ music(2)
  dude = defobj(16,16,1)
  ship = {}
  roomx = {2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 10, 10}
@@ -43,7 +43,7 @@ function _update()
 	end
 end
 
--- Menu
+-- menu
 
 function update_menu()
 	if menuitem == 2 then
@@ -65,6 +65,7 @@ function update_menu()
 	if btn(4) and btnp(4) then
 		if menuitem == 0 then
 			menu = false
+   music(0)
 		else
 			menuitem = 2
 		end
