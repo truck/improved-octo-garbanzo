@@ -21,14 +21,13 @@ Sound stuff:
 
 - Tune(s)?
 
-- Telephone ring
-- Door open
-- Door unlock
-- walking?
-- computer startup
-- explosion (dunno where we use it but gotta have an explosion sound)
-- floppy insertion sound
-- floppy eject sound
-- modem sound
-
-- probably more but that is good to start
+- Telephone ring - 00
+- Door open - 01
+- Door unlock - 02
+- walking? - 03
+- computer startup - 04
+- explosion - 05
+- floppy insertion sound - 06
+- floppy eject sound - 07
+- modem sound - 08 
+- phone rotary - 09
