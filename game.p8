@@ -46,26 +46,19 @@ end
 -- room definition
 function defroom(roomnum)
  room = {}
+ room.number = roomnum
  room.updoor = 1
  room.leftdoor = 1
  room.power = false
  room.phonenum = '0000'
+ return room
 end
 
-
 function status(x,y,z)
--- some debug stuff and why did the cursor line leave
-cursor(0,64)
--- print('status status')
--- print('this is where status stuff goes')
-print(x)
-print(y)
-print(z)
--- print(ship[5][6])
--- print('3')
--- print(ship[8][8])
--- print('5')
--- print('6 careful to not overflow this')
+ cursor(0,64)
+ print(x)
+ print(y)
+ print(z)
  drawship()
 end
 
@@ -145,8 +138,23 @@ function newroom(x,y)
   dude.x = 56
   rx = rx - 1
  end
- dude.room = ship[rx][ry]
+ daroom = ship[rx][ry]
+ dude.room = daroom.number
 end
+
+function findroom(x,y,dir)
+ if dir == 1 then
+  y = y - 1
+ elseif dir == 2 then
+  y = y + 1
+ elseif dir == 3 then
+  x = x + 1
+ elseif dir == 4 then
+  x = x - 1
+ end
+ return x,y
+end
+
 function calcpos(dir)
  v = dir < 3
  h = dir > 2
@@ -181,7 +189,7 @@ function draw_actor(a)
  pal()
  xx,yy = calcpos(a.dir)
  zz = solid( calcpos(a.dir) )
- status(xx,yy,zz)
+ status(dude.room,yy,zz)
 end
 
 function setupship()
@@ -189,8 +197,13 @@ function setupship()
   ship[i]={}
  end
  for i=1,50,1 do
-  ship[roomx[i]][roomy[i]] = i
+  ship[roomx[i]][roomy[i]] = defroom(i)
  end
+-- rooms
+ for i=1,50,1 do
+
+ end
+
 end
 
 function drawship()
@@ -201,7 +214,7 @@ function drawship()
    end
   end
  end
-spr(25,78+roomx[dude.room]*3,10+roomy[dude.room]*3)
+ spr(25,78+roomx[dude.room]*3,10+roomy[dude.room]*3)
 end
 
 function checkflag(x,y,flag)
