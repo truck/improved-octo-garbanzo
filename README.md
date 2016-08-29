@@ -16,3 +16,19 @@ outside (where you can be eaten by monsters or something.)
 technologies are old computers, phones, floppy disks, cassette tapes,
 typewriters with written messages, etc.
 
+--
+Sound stuff:
+
+- Tune(s)?
+
+- Telephone ring
+- Door open
+- Door unlock
+- walking?
+- computer startup
+- explosion (dunno where we use it but gotta have an explosion sound)
+- floppy insertion sound
+- floppy eject sound
+- modem sound
+
+- probably more but that is good to start
