@@ -1,31 +1,35 @@
 pico-8 cartridge // http://www.pico-8.com
 version 8
 __lua__
--- code goes here
--- i am unsure why the global actors work outside the init, but...
+-- Globals
 actors = {}
-music(0)
+
+-- Control Routines
 
 function _init()
+ music(0)
  dude = defobj(16,16,1)
  ship = {}
  roomx = {2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 10, 10}
  roomy = {5, 6, 4, 5, 6, 7, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 9, 2, 3, 4, 5, 6, 7, 8, 9, 2, 3, 4, 5, 6, 7, 8, 9, 2, 3, 4, 7, 8, 9, 2, 3, 4, 7, 8, 9, 3, 8}
- setupship()
+ setup_ship()
  dude.room = flr(rnd(50))+1
  draw_room(dude.room)
  menu = true
+ minigame = false
  menuitem = 0
 end
 
 function _draw()
 	if menu then
-		drawmenu()
+		draw_menu()
 	else
 	 cls()
 	 map(0,0,0,0,16,8)
 	 foreach(actors,draw_actor)
-	 phonedial()
+  if minigame then
+ 	 phonedial()
+  end
 	end
 end
 
@@ -33,13 +37,15 @@ end
 
 function _update()
 	if menu then
-		updatemenu()
+		update_menu()
 	else
-	 movedude()
+	 move_dude()
 	end
 end
 
-function updatemenu()
+-- Menu
+
+function update_menu()
 	if menuitem == 2 then
 		if btn(4) and btnp(4) then
 			menuitem = 0
@@ -65,7 +71,7 @@ function updatemenu()
 	end
 end
 
-function drawmenu()
+function draw_menu()
 	cls()
 
 	if menuitem == 2 then // help
@@ -90,7 +96,8 @@ function drawmenu()
 	end
 end
 
--- define a moving object
+-- definitions / constructors
+
 function defobj(x,y,sprite)
  obj = {}
  obj.x = x
@@ -106,7 +113,6 @@ function defobj(x,y,sprite)
  return obj
 end
 
--- room definition
 function defroom(roomnum)
  room = {}
  room.number = roomnum
@@ -117,74 +123,31 @@ function defroom(roomnum)
  return room
 end
 
-function status(x,y,z)
- cursor(0,64)
- print(x)
- print(y)
- print(z)
- drawship()
-end
-
-function getdir()
- d = 0
- if (btn(0)) then
-  d = 4
+function setup_ship()
+ for i=1,11,1 do
+  ship[i]={}
  end
- if (btn(1)) then
-  d = 3
+ for i=1,50,1 do
+  ship[roomx[i]][roomy[i]] = defroom(i)
  end
- if (btn(2)) then
-  d = 1
- end
- if (btn(3)) then
-  d = 2
- end
- return d
-end
-
-function movedude()
- dude.dir = getdir()
- move = {{0,-1},{0,1},{1,0},{-1,0}}
- ok = false
- if dude.dir > 0 then
-  x,y = calcpos(dude.dir)
-  if not solid(x,y) then
-   dude.x = dude.x + move[dude.dir][1]
-   dude.y = dude.y + move[dude.dir][2]
+-- rooms
+ for i=1,50,1 do
+  rx = roomx[i]
+  ry = roomy[i]
+  roomup = findroom(rx,ry,1)
+--  roomdown = findroom(rx,ry,2)
+--  roomright = findroom(rx,ry,3)
+  roomleft = findroom(rx,ry,4)
+  thisroom = ship[rx][ry]
+  if roomup then
+   thisroom.updoor = 2
   end
-  -- possible 'hook' spot for interaction with objects
-  if interactive(x,y) then
-   do_interaction(x,y)
+  if roomleft then
+   thisroom.leftdoor = 2
   end
  end
 end
 
-function do_interaction(x,y)
- x1 = flr(x/8)
- y1 = flr(y/8)
- spot = mget(x1,y1)
--- door: 21, 22
- if spot == 22 then
-  newroom(x1,y1)
- end
-end
-
-function phonedial()
- circ(64,96,30,13)
- circfill(65,97,30,6)
- circfill(65,97,16,15)
- for i=1,30,3 do
-  r = (29+i)*(1/35)
-  x = sin(r)*23
-  y = cos(r)*23
-  circfill(66+x,98+y,4,7)
-  circfill(64+x,96+y,4,5)
-  circfill(65+x,97+y,4,0)
- end
- circ(65+x,97+y,2.5,8)
-end
-
--- i turned the spaceship 90 degrees accidentaly but it looks good so x,y swap
 function newroom(x,y)
  rx = roomx[dude.room]
  ry = roomy[dude.room]
@@ -204,6 +167,52 @@ function newroom(x,y)
  daroom = ship[rx][ry]
  dude.room = daroom.number
  draw_room(daroom.number)
+end
+
+-- movement
+
+function move_dude()
+ dude.dir = getdir()
+ move = {{0,-1},{0,1},{1,0},{-1,0}}
+ ok = false
+ if dude.dir > 0 then
+  x,y = calcpos(dude.dir)
+  if not solid(x,y) then
+   dude.x = dude.x + move[dude.dir][1]
+   dude.y = dude.y + move[dude.dir][2]
+  end
+  -- possible 'hook' spot for interaction with objects
+  if interactive(x,y) then
+   do_interaction(x,y)
+  end
+ end
+end
+
+function getdir()
+ d = 0
+ if (btn(0)) then
+  d = 4
+ end
+ if (btn(1)) then
+  d = 3
+ end
+ if (btn(2)) then
+  d = 1
+ end
+ if (btn(3)) then
+  d = 2
+ end
+ return d
+end
+
+function do_interaction(x,y)
+ x1 = flr(x/8)
+ y1 = flr(y/8)
+ spot = mget(x1,y1)
+-- door: 21, 22
+ if spot == 22 then
+  newroom(x1,y1)
+ end
 end
 
 function findroom(x,y,dir)
@@ -234,6 +243,8 @@ function calcpos(dir)
  return x,y
 end
 
+-- drawing
+
 function draw_actor(a)
  d = a.dir
  bgspr = 10
@@ -254,31 +265,6 @@ function draw_actor(a)
  xx,yy = calcpos(a.dir)
  zz = solid( calcpos(a.dir) )
  status(dude.room,yy,zz)
-end
-
-function setupship()
- for i=1,11,1 do
-  ship[i]={}
- end
- for i=1,50,1 do
-  ship[roomx[i]][roomy[i]] = defroom(i)
- end
--- rooms
- for i=1,50,1 do
-  rx = roomx[i]
-  ry = roomy[i]
-  roomup = findroom(rx,ry,1)
---  roomdown = findroom(rx,ry,2)
---  roomright = findroom(rx,ry,3)
-  roomleft = findroom(rx,ry,4)
-  thisroom = ship[rx][ry]
-  if roomup then
-   thisroom.updoor = 2
-  end
-  if roomleft then
-   thisroom.leftdoor = 2
-  end
- end
 end
 
 function draw_room(roomnum)
@@ -314,7 +300,7 @@ function draw_room(roomnum)
  poke(8584,doorspot)
 end
 
-function drawship()
+function draw_ship_map()
  for x=1,10,1 do
   for y=1,10,1 do
    if ship[x][y] ~= nil then
@@ -324,6 +310,8 @@ function drawship()
  end
  spr(25,78+roomx[dude.room]*3,10+roomy[dude.room]*3)
 end
+
+-- deal with flags
 
 function checkflag(x,y,flag)
  x1 = flr(x/8)
@@ -339,6 +327,34 @@ end
 function interactive(x, y)
  return checkflag(x,y,1)
 end
+
+-- puzzle bits
+
+function phonedial()
+ circ(64,96,30,13)
+ circfill(65,97,30,6)
+ circfill(65,97,16,15)
+ for i=1,30,3 do
+  r = (29+i)*(1/35)
+  x = sin(r)*23
+  y = cos(r)*23
+  circfill(66+x,98+y,4,7)
+  circfill(64+x,96+y,4,5)
+  circfill(65+x,97+y,4,0)
+ end
+ circ(65+x,97+y,2.5,8)
+end
+
+-- extras
+
+function status(x,y,z)
+ cursor(0,64)
+ print(x)
+ print(y)
+ print(z)
+ draw_ship_map()
+end
+
 
 
 __gfx__
