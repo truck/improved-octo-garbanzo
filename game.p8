@@ -18,6 +18,11 @@ function _init()
  menu = true
  minigame = false
  menuitem = 0
+	stars = {}
+	num_stars = 64
+	for i=0,num_stars do
+		stars[i] = {x = flr(rnd(128)), y = flr(rnd(128))}
+	end
 end
 
 function _draw()
@@ -70,6 +75,14 @@ function update_menu()
 			menuitem = 2
 		end
 	end
+
+	srand(1337)	
+	for i=0,num_stars do
+		stars[i].x += rnd(1) + 0.5
+		if stars[i].x > 128 then
+			stars[i].x = 0
+		end
+	end
 end
 
 function draw_menu()
@@ -87,10 +100,8 @@ function draw_menu()
   print("press Ž to continue")
 	else
 		srand(1337)
-		for i = 0,34 do
-			local sx = flr(rnd(128))
-			local sy = flr(rnd(128))
-			circ(sx, sy, 0, 5 + flr(rnd(3)))
+		for i = 0,num_stars do
+			circ(stars[i].x, stars[i].y, 0, 5 + flr(rnd(3)))
 		end
 
 		spr(11, 48, 42, 5, 1)
