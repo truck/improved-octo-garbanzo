@@ -84,3 +84,22 @@ vdoor: 21
 hdoor: 22
 opendoor: 23
 disk: 32  phone: 33  computer: 34  fax: 35 modem: 36 tape: 37
+
+ballthing: 39
+
+kitchen:
+ tea
+
+ doors: no power
+
+ power via phone 1
+
+ phone 1: doors locked
+
+ unlock via computer 1
+
+ computer 1: needs disk 1
+
+ disk 1: in room 2, locked doors
+
+ room 2:

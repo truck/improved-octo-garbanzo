@@ -351,6 +351,10 @@ function draw_room(roomnum)
  poke(8576,doorspot)
  doorspot = 20+theroom.rightdoor
  poke(8584,doorspot)
+-- phones
+ if theroom.phone then
+  poke(8580,33)
+ end
 end
 
 function draw_ship_map()
