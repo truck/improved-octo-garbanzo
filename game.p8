@@ -12,8 +12,8 @@ function _init()
  ship = {}
  roomx = {2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 10, 10}
  roomy = {5, 6, 4, 5, 6, 7, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 9, 2, 3, 4, 5, 6, 7, 8, 9, 2, 3, 4, 5, 6, 7, 8, 9, 2, 3, 4, 7, 8, 9, 2, 3, 4, 7, 8, 9, 3, 8}
- setup_ship()
  dude.room = flr(rnd(50))+1
+ setup_ship()
  draw_room(dude.room)
  menu = true
  minigame = false
@@ -125,15 +125,25 @@ function defroom(roomnum)
  room.leftdoor = 0
  room.power = false
  room.phonenum = '0000'
+ room.tea = false
+ room.computer = false
+ room.disk = false
+ room.phone = false
+ room.modem = false
+ room.cassette = false
+ room.start = false
  return room
 end
 
 function setup_ship()
+ roomlist = {}
  for i=1,11,1 do
   ship[i]={}
  end
  for i=1,50,1 do
-  ship[roomx[i]][roomy[i]] = defroom(i)
+  box = defroom(i)
+  ship[roomx[i]][roomy[i]] = box
+  roomlist[i] = box
  end
 -- rooms
  for i=1,50,1 do
@@ -151,6 +161,44 @@ function setup_ship()
    thisroom.leftdoor = 2
   end
  end
+ roomlist[dude.room].start = true
+ tearoom = dude.room
+ while tearoom == dude.room do
+  tearoom = flr(rnd(50))+1
+ end
+ roomlist[tearoom].tea = true
+-- printh(ship[roomx[tearoom]][roomy[tearoom]].tea)
+ for i=1,5,1 do
+  phone = getunusedroom()
+  roomlist[phone].phone = true
+  roomlist[phone].phonenum = makephonenumber()
+ end
+end
+
+function makephonenumber()
+ s = ''
+ for i=1,4,1 do
+  s = s .. flr(rnd(10))
+ end
+ return s
+end
+
+function getunusedroom()
+ i = dude.room
+ while roomisused(i) do
+  i = flr(rnd(50)+1)
+ end
+ return i
+end
+
+function roomisused(roomnum)
+ return (roomlist[roomnum].tea or
+         roomlist[roomnum].start or
+         roomlist[roomnum].computer or
+         roomlist[roomnum].disk or
+         roomlist[roomnum].phone or
+         roomlist[roomnum].modem or
+         roomlist[roomnum].cassette )
 end
 
 function newroom(x,y)
