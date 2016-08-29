@@ -13,6 +13,7 @@ function _init()
  roomy = {5, 6, 4, 5, 6, 7, 3, 4, 5, 6, 7, 8, 2, 3, 4, 5, 6, 7, 8, 9, 2, 3, 4, 5, 6, 7, 8, 9, 2, 3, 4, 5, 6, 7, 8, 9, 2, 3, 4, 7, 8, 9, 2, 3, 4, 7, 8, 9, 3, 8}
  setupship()
  dude.room = flr(rnd(50))+1
+ draw_room(dude.room)
  menu = true
  menuitem = 0
 end
@@ -43,18 +44,18 @@ function updatemenu()
 		if btn(4) and btnp(4) then
 			menuitem = 0
 		end
-		
+
 		return
 	end
 
 	if btn(3) and btnp(3) then
 		menuitem = (menuitem + 1) % 2
 	end
-	
+
 	if btn(2) and btnp(2) then
 		menuitem = (menuitem - 1) % 2
 	end
-	
+
 	if btn(4) and btnp(4) then
 		if menuitem == 0 then
 			menu = false
@@ -66,7 +67,7 @@ end
 
 function drawmenu()
 	cls()
-	
+
 	if menuitem == 2 then // help
 		print("story goes here")
 		print("lorem ipsum dolor sit amet")
@@ -80,11 +81,11 @@ function drawmenu()
 			local sy = flr(rnd(128))
 			circ(sx, sy, 0, 5 + flr(rnd(3)))
 		end
-	
+
 		spr(11, 48, 42, 5, 1)
 		spr(48, 48, 56, 3, 1)
 		spr(51, 48, 66, 3, 1)
-	
+
 		spr(38, 38, 56 + menuitem * 10)
 	end
 end
@@ -254,7 +255,7 @@ function draw_actor(a)
  zz = solid( calcpos(a.dir) )
  status(dude.room,yy,zz)
 end
-			
+
 function setupship()
  for i=1,11,1 do
   ship[i]={}
@@ -311,7 +312,6 @@ function draw_room(roomnum)
  poke(8576,doorspot)
  doorspot = 20+theroom.rightdoor
  poke(8584,doorspot)
- return theroom
 end
 
 function drawship()
