@@ -42,15 +42,20 @@ end
 
 function _update()
 	if menu then
-		update_menu()
+  update_menu()
 	else
-	 move_dude()
-	end
+  move_dude()
+ end
 end
 
 -- menu
 
 function update_menu()
+ if menuitem == 3 then
+  update_win()
+  return
+ end
+
 	if menuitem == 2 then
 		if btn(4) and btnp(4) then
 			menuitem = 0
@@ -75,29 +80,45 @@ function update_menu()
 			menuitem = 2
 		end
 	end
+ draw_stars()
+end
 
-	srand(1337)
-	for i=0,num_stars do
-		stars[i].x += rnd(1) + 0.5
-		if stars[i].x > 128 then
-			stars[i].x = 0
-		end
-	end
+function draw_stars()
+ for i=0,num_stars do
+  stars[i].x += rnd(1) + 0.5
+  if stars[i].x > 128 then
+   stars[i].x = 0
+  end
+ end
+end
+
+function update_win()
+ cls()
+ draw_stars()
+ spr(54,119,119)
+ print("you found the tea kettle!",8,24,8)
+ print("you win!",12,40,10)
+ print("10 minutes left, lame ending, so",0,80,1)
+ print("Thanks for playing and look for",0,96,12)
+ print(" the final...",0,104,6)
 end
 
 function draw_menu()
 	cls()
 
 	if menuitem == 2 then // help
+  color(7)
 		print("on your infinite travels")
 		print("through space, you awake")
 		print("from cryosleep and just")
 		print("want to make tea. fight")
   print("the ancient technology to")
   print("find the kitchen...")
-  print("")
+  color(3)
   print("a game by team (\" for ld36")
+  color(9)
   print("press Ž to continue")
+  color()
 	else
 		srand(1337)
 		for i = 0,num_stars do
@@ -108,7 +129,7 @@ function draw_menu()
 		spr(48, 48, 56, 3, 1)
 		spr(51, 48, 66, 3, 1)
 
- spr(54,119,119)
+  spr(54,119,119)
 
 		spr(38, 38, 56 + menuitem * 10)
 	end
@@ -127,6 +148,7 @@ function defobj(x,y,sprite)
  obj.framect = 1
  obj.dir = 0
  obj.room = 0
+ obj.nums = {}
  add(actors, obj)
  return obj
 end
@@ -141,6 +163,7 @@ function defroom(roomnum)
  room.tea = false
  room.computer = false
  room.disk = false
+ room.printer = false
  room.phone = false
  room.modem = false
  room.cassette = false
@@ -184,7 +207,10 @@ function setup_ship()
  for i=1,5,1 do
   phone = getunusedroom()
   roomlist[phone].phone = true
-  roomlist[phone].phonenum = makephonenumber()
+  printer = getunusedroom()
+  pnum = makephonenumber()
+  roomlist[phone].phonenum = pnum
+  roomlist[printer].printer = pnum
  end
 end
 
@@ -210,6 +236,7 @@ function roomisused(roomnum)
          roomlist[roomnum].computer or
          roomlist[roomnum].disk or
          roomlist[roomnum].phone or
+         roomlist[roomnum].printer or
          roomlist[roomnum].modem or
          roomlist[roomnum].cassette )
 end
@@ -282,6 +309,25 @@ function do_interaction(x,y)
  if spot == 33 then
   minigame = true
  end
+ if spot == 35 then
+  do_printer()
+ end
+ if spot == 38 then
+  menu = true
+  menuitem = 3
+  music(2)
+ end
+end
+
+function do_printer()
+ pnum = roomlist[dude.room].printer
+ clip()
+ print("You find a printer that says:",16,72,3)
+ print("PHONE EXTENSION: " .. pnum, 32,88,7)
+ color()
+ add(dude.nums,pnum)
+ roomlist[dude.room].printer = false
+ poke(8580,19)
 end
 
 function findroom(x,y,dir)
@@ -331,9 +377,7 @@ function draw_actor(a)
  end
  spr(walkspr, a.x, a.y)
  pal()
- xx,yy = calcpos(a.dir)
- zz = solid( calcpos(a.dir) )
- status(dude.room,yy,zz)
+ status()
 end
 
 function draw_room(roomnum)
@@ -370,6 +414,12 @@ function draw_room(roomnum)
 -- phones
  if theroom.phone then
   poke(8580,33)
+ end
+ if theroom.printer then
+  poke(8580,35)
+ end
+ if theroom.tea then
+  poke(8580,38)
  end
 end
 
@@ -420,15 +470,21 @@ end
 
 -- extras
 
-function status(x,y,z)
- cursor(0,64)
- print(x)
- print(y)
- print(z)
+function status()
+ cx = 74
+ cy = 42
+-- clip(74,42,72,32)
+ color(7)
+ for i in all(dude.nums) do
+  print(i,cx,cy)
+  cx = cx + 24
+  if cx > 100 then
+   cx = 74
+   cy = cy + 8
+  end
+ end
  draw_ship_map()
 end
-
-
 
 __gfx__
 00000000001110000011100000111000001110000011100001111000011110000001111000011110777777771111111111111111111111111111111111111111
